@@ -1,0 +1,33 @@
+# Maintainer: Jim Turner <jturner314 @t gmail dot com>
+
+pkgname=think-rotate
+_newpkgname=thinkpad-scripts
+pkgver=3.5.1
+pkgrel=1
+pkgdesc="Scripts for ThinkPad X220 & X230 Tablet rotation, docking, etc."
+arch=('any')
+url="http://martin-ueding.de/en/projects/think-rotate"
+license=('GPL')
+depends=('acpid' 'alsa-utils' 'systemd>=196' 'xf86-input-wacom' 'xorg-xinput' 'xorg-xrandr')
+makedepends=('python-sphinx')
+optdepends=('glib2: for rotating subpixel anti-aliasing'
+            'kdebase-kdialog: for showing dialog boxes'
+            'kvkbd: for virtual keyboard'
+            'libpulse: for volume control when docking'
+            'networkmanager: for managing connections when docking'
+            'qt4: for showing dialog boxes'
+            'xorg-xbacklight: for backlight control when docking')
+conflicts=('thinkpad-scripts')
+install="$pkgname.install"
+source=("http://github.com/martin-ueding/$_newpkgname/archive/v$pkgver.tar.gz")
+sha256sums=('1b62df8fdfbbb5e443d3d87f8e01cd07b8c83031a36d0cf1f26535fce81d3035')
+
+build() {
+    cd "$srcdir/$_newpkgname-$pkgver"
+    make
+}
+
+package() {
+    cd "$srcdir/$_newpkgname-$pkgver"
+    make DESTDIR="$pkgdir/" install
+}
